@@ -1,13 +1,12 @@
 #!/bin/bash
 
-# Check if curl and jq are installed
+# Update package list and install jq
+sudo apt-get update -y
+sudo apt-get install -y jq
+
+# Check if curl is installed
 if ! command -v curl &> /dev/null; then
     echo "curl is not installed. Please install curl first."
-    exit 1
-fi
-
-if ! command -v jq &> /dev/null; then
-    echo "jq is not installed. Please install jq first."
     exit 1
 fi
 
