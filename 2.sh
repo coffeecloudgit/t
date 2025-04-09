@@ -17,6 +17,9 @@ useradd -m -s /bin/bash web3
 echo "Please set the password for user web3:"
 passwd web3
 
+# Add web3 user to sudo group
+usermod -aG sudo web3
+
 # Create the .ssh directory
 sudo -u web3 mkdir -p /home/web3/.ssh
 
@@ -60,4 +63,3 @@ sudo hostnamectl set-hostname $NEW_HOSTNAME
 
 echo "The SSH keys of GitHub user sek2022 have been successfully appended to /home/web3/.ssh/authorized_keys."
 echo "The hostname has been updated to $NEW_HOSTNAME."
-    
