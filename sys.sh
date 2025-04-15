@@ -11,6 +11,8 @@ echo "CPU 核数: $total_cpu_cores"
 
 # 从 /proc/cpuinfo 中获取线程数
 threads=$(grep 'processor' /proc/cpuinfo | wc -l)
+# 线程数加 1
+threads=$((threads + 1))
 echo "CPU 线程数: $threads"
 
 # 获取内存大小
@@ -28,3 +30,4 @@ if [ -z "$gpu_info" ]; then
 else
     echo "显卡型号: $gpu_info"
 fi
+    
