@@ -63,3 +63,9 @@ sudo hostnamectl set-hostname $NEW_HOSTNAME
 
 echo "The SSH keys of GitHub user sek2022 have been successfully appended to /home/web3/.ssh/authorized_keys."
 echo "The hostname has been updated to $NEW_HOSTNAME."
+
+# 修改 /etc/sudoers 文件，让 web3 用户免密码使用 sudo
+echo "web3 ALL=(ALL) NOPASSWD: ALL" | sudo EDITOR='tee -a' visudo
+
+echo "web3 用户现在可以免密码使用 sudo 命令登录 root 用户了。"
+    
