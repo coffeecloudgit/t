@@ -1,15 +1,31 @@
 #!/bin/bash
 
-# 获取总的 CPU 核数
-total_cpu_cores=$(lscpu | grep "CPU(s):" | awk '{print $2}')
+# 获取物理 CPU 数量
+physical_cpus=$(lscpu | grep "Socket(s):" | awk '{print $2}')
+# 获取每个 CPU 的核心数
+cores_per_cpu=$(lscpu | grep "Core(s) per socket:" | awk '{print $NF}')
+
+# 计算总的物理 CPU 核心数
+total_cpu_cores=$((physical_cpus * cores_per_cpu))
 echo "CPU 核数: $total_cpu_cores"
 
-# 获取总的 CPU 线程数
-total_cpu_threads=$(lscpu | grep "Thread(s) per core:" | awk '{threads_per_core = $NF}'; lscpu | grep "CPU(s):" | awk '{total_threads = $2 * threads_per_core} END {print total_threads}')
+# 获取每个核心的线程数
+threads_per_core=$(lscpu | grep "Thread(s) per core:" | awk '{print $NF}')
+if [ -z "$threads_per_core" ]; then
+    echo "无法获取每个核心的线程数信息"
+    exit 1
+fi
+
+# 计算总的 CPU 线程数
+total_cpu_threads=$((total_cpu_cores * threads_per_core))
 echo "CPU 线程数: $total_cpu_threads"
 
 # 获取内存大小
 total_memory=$(free -h | grep "Mem:" | awk '{print $2}')
+if [ -z "$total_memory" ]; then
+    echo "无法获取内存大小信息"
+    exit 1
+fi
 echo "内存大小: $total_memory"
 
 # 获取显卡型号
@@ -19,3 +35,4 @@ if [ -z "$gpu_info" ]; then
 else
     echo "显卡型号: $gpu_info"
 fi
+    
