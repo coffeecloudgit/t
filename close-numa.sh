@@ -16,7 +16,7 @@ if grep -q "numa=off" /etc/default/grub; then
 else
     # 查找 GRUB_CMDLINE_LINUX 参数并添加 numa=off
     if grep -q "GRUB_CMDLINE_LINUX=" /etc/default/grub; then
-        sed -i 's/GRUB_CMDLINE_LINUX="\(.*\)"/GRUB_CMDLINE_LINUX="\1 numa=off"/' /etc/default/grub
+        sed -i 's/GRUB_CMDLINE_LINUX="\(.*\)"/GRUB_CMDLINE_LINUX="\1numa=off"/' /etc/default/grub
     else
         echo 'GRUB_CMDLINE_LINUX="numa=off"' >> /etc/default/grub
     fi
