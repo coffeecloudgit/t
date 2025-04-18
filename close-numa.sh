@@ -31,11 +31,19 @@ echo "已更新 GRUB 配置"
 read -p "是否要重启服务器以应用新的配置？(y/n): " answer
 case $answer in
     [Yy]* )
-        if command -v ipmitool &> /dev/null; then
+        if ! command -v ipmitool &> /dev/null; then
+            echo "ipmitool 未安装，正在安装..."
+            apt-get update
+            apt-get install -y ipmitool
+            if [ $? -eq 0 ]; then
+                echo "ipmitool 安装成功，正在使用 ipmitool 重启服务器..."
+                ipmitool power reset
+            else
+                echo "ipmitool 安装失败，你可以手动尝试安装后再使用 'ipmitool power reset' 重启服务器。"
+            fi
+        else
             echo "正在使用 ipmitool 重启服务器..."
             ipmitool power reset
-        else
-            echo "ipmitool 未安装，无法使用其重启服务器。你可以使用 'sudo reboot' 手动重启。"
         fi
         ;;
     [Nn]* )
